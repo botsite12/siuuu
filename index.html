@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quà tặng miễn phí!</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            touch-action: none; /* Ngăn chặn zoom hoặc cuộn trên đt */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .btn-gift {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            padding: 25px 50px;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-gift:active {
+            transform: scale(0.9);
+        }
+
+        #troll-ui {
+            display: none;
+        }
+
+        .troll-message {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Hiệu ứng nhấp nháy cực mạnh */
+        .seizure {
+            animation: flash 0.1s infinite;
+        }
+
+        @keyframes flash {
+            0% { background-color: #ff0000; }
+            25% { background-color: #00ff00; }
+            50% { background-color: #0000ff; }
+            75% { background-color: #ffff00; }
+            100% { background-color: #ff00ff; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="init-ui">
+        <button class="btn-gift" onclick="startTroll()">VÀO WEB ĐI 🎁</button>
+        <p style="margin-top: 20px; color: #888;">Nhấn vào để vào web của Cường</p>
+    </div>
+
+    <div id="troll-ui">
+        <h1 class="troll-message">HAHAHA!<br>BẠN ĐÃ BỊ LỪA!<br>😈😈😈</h1>
+        <p>Chào mừng bạn đến với trang web vô tri này!</p>
+        <p>CƯỜng làm gì có web ha ha ha...</p>
+      </div>
+
+    <audio id="audio" loop>
+        <source src="https://www.myinstants.com/media/sounds/troll-face-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function startTroll() {
+            // 1. Chuyển đổi giao diện
+            document.getElementById('init-ui').style.display = 'none';
+            document.getElementById('troll-ui').style.display = 'block';
+            document.body.classList.add('seizure');
+
+            // 2. Phát nhạc (Bắt buộc phải có tương tác mới phát được)
+            const audio = document.getElementById('audio');
+            audio.play().catch(e => console.log("Cần click để phát nhạc"));
+
+            // 3. Hiệu ứng rung (Chỉ hoạt động trên Android)
+            if ("vibrate" in navigator) {
+                navigator.vibrate([200, 100, 200, 100, 500]);
+            }
+
+            // 4. "Khóa" người dùng bằng alert (Tạo cảm giác bị treo máy giả)
+            setTimeout(() => {
+                alert("Ối giời ơi!");
+                alert("Bạn tưởng có quà thật à?");
+                alert("Hahaha, chúc bạn một ngày vui vẻ nhé!");
+                alert("MẤY THẰNG NGU HAHA");
+                alert("MẤY CON BÒ");
+                // Thêm một vòng lặp nhỏ để trêu
+                for(let i=1; i<=3; i++) {
+                    alert("Thông báo thứ " + i + "...");
+                }
+            }, 500);
+        }
+
+        // Ngăn chặn phím quay lại trên điện thoại (tùy trình duyệt)
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+            alert("Không thoát được đâu! Hahaha");
+        };
+    </script>
+</body>
+</html>
