@@ -18,12 +18,14 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             overflow: hidden;
-            touch-action: none; /* Ngăn chặn zoom hoặc cuộn trên đt */
+            touch-action: none; 
         }
 
         .container {
             width: 100%;
             max-width: 400px;
+            z-index: 99; /* Luôn hiện trên sticker */
+            position: relative;
         }
 
         .btn-gift {
@@ -55,6 +57,22 @@
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
+        /* Sticker Style */
+        .sticker {
+            position: absolute;
+            z-index: 1;
+            display: none; /* Ẩn lúc đầu */
+            pointer-events: none; /* Không cho chạm vào sticker để cản trở nút bấm */
+        }
+
+        /* Vị trí các sticker */
+        .s1 { top: 5%; left: 5%; width: 120px; }
+        .s2 { top: 5%; right: 5%; width: 100px; }
+        .s3 { bottom: 5%; left: 5%; width: 110px; }
+        .s4 { bottom: 5%; right: 5%; width: 130px; }
+        .s5 { top: 40%; left: 2%; width: 80px; }
+        .s6 { top: 40%; right: 2%; width: 90px; }
+
         /* Hiệu ứng nhấp nháy cực mạnh */
         .seizure {
             animation: flash 0.1s infinite;
@@ -71,16 +89,23 @@
 </head>
 <body>
 
+    <img src="https://tse1.mm.bing.net/th/id/OIP.8JGPdGWdav4YUL5BNRMtHQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" class="sticker s1">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.8JGPdGWdav4YUL5BNRMtHQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" class="sticker s2">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.8JGPdGWdav4YUL5BNRMtHQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" class="sticker s3">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnQ1MXg1Mmp1emN3YjYyejBwMG16emF0Z2p4eGgxbWl1ZXdqdnhqMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/1uPiL9Amv5zkk/giphy.gif" class="sticker s4">
+    <img src="https://media.tenor.com/images/3f6b6126853d2de4cf789667b72b5070/tenor.gif" class="sticker s5">
+    <img src="https://i.pinimg.com/originals/5d/88/34/5d8834e51d814285691e78bcccba2244.gif" class="sticker s6">
+
     <div class="container" id="init-ui">
         <button class="btn-gift" onclick="startTroll()">VÀO WEB ĐI 🎁</button>
         <p style="margin-top: 20px; color: #888;">Nhấn vào để vào web của Cường</p>
     </div>
 
-    <div id="troll-ui">
+    <div class="container" id="troll-ui">
         <h1 class="troll-message">HAHAHA!<br>BẠN ĐÃ BỊ LỪA!<br>😈😈😈</h1>
         <p>Chào mừng bạn đến với trang web vô tri này!</p>
-        <p>CƯỜng làm gì có web ha ha ha...</p>
-      </div>
+        <p>Cường làm gì có web ha ha ha...</p>
+    </div>
 
     <audio id="audio" loop>
         <source src="https://www.dropbox.com/scl/fi/vmz4uq9jfpmdtzt90gmb0/AI-A-EM-V-KVLTX-x-WUYS-REMIX-TIA-FT.-L-THI-N-HI-U-LOW-CORTISOL-FUNK.mp3?rlkey=zim3gsxa3vxtqnloc3obcprmz&st=hqe94zga&dl=1" type="audio/mpeg">
@@ -93,30 +118,32 @@
             document.getElementById('troll-ui').style.display = 'block';
             document.body.classList.add('seizure');
 
-            // 2. Phát nhạc (Bắt buộc phải có tương tác mới phát được)
-            const audio = document.getElementById('audio');
-            audio.play().catch(e => console.log("Cần click để phát nhạc"));
+            // 2. Hiện các sticker
+            const stickers = document.querySelectorAll('.sticker');
+            stickers.forEach(s => s.style.display = 'block');
 
-            // 3. Hiệu ứng rung (Chỉ hoạt động trên Android)
+            // 3. Phát nhạc
+            const audio = document.getElementById('audio');
+            audio.play().catch(e => console.log("Lỗi phát nhạc"));
+
+            // 4. Rung máy
             if ("vibrate" in navigator) {
                 navigator.vibrate([200, 100, 200, 100, 500]);
             }
 
-            // 4. "Khóa" người dùng bằng alert (Tạo cảm giác bị treo máy giả)
+            // 5. Alert liên tục
             setTimeout(() => {
                 alert("Ối giời ơi!");
-                alert("Bạn tưởng là web á ,ko ko đó là troll VN ");
+                alert("Bạn tưởng là web á, ko ko đó là troll VN");
                 alert("Hahaha, chúc mấy con bò sớm NGU thêm kkk");
                 alert("MẤY THẰNG NGU HAHA");
                 alert("MẤY CON BÒ");
-                // Thêm một vòng lặp nhỏ để trêu
                 for(let i=1; i<=3; i++) {
                     alert("Thông báo thứ " + i + "...");
                 }
             }, 500);
         }
 
-        // Ngăn chặn phím quay lại trên điện thoại (tùy trình duyệt)
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             history.go(1);
